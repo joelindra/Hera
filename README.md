@@ -158,14 +158,12 @@ Security notes:
 - Switch execution mode per command: Auto, Local, Remote.
 - Manage clients and API keys in Settings.
 
-Quick Tools supported: Nmap, Netcat, Whois, Dig, Nikto, SQLMap.
-
 ---
 
 ## 🛡️ Safety & Limitations
 
 - The app performs basic safety validation and tool availability checks.
-- Pen-testing tools are allowed in local environments; obviously destructive system-level operations are blocked.
+- Pen-testing tools are allowed in local environments.
 - You are responsible for complying with laws and policies when using security tools.
 
 ---
@@ -176,7 +174,6 @@ Quick Tools supported: Nmap, Netcat, Whois, Dig, Nikto, SQLMap.
 - Multi-user auth and roles
 - Command templates and saved prompts
 - Export results (PDF/JSON/CSV)
-- Advanced tools (Metasploit, Burp Suite)
 - Multi-session parallel execution
 - Full MCP protocol implementation
 - Output syntax highlighting
