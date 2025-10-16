@@ -1,4 +1,4 @@
-# Kali x Tuan Hades MCP Agent
+# Kali Linux x Tuan Hades MCP Agent
 
 Run Kali Linux security tools by describing what you want in natural language. This web-based MCP (Model Context Protocol) Agent turns prompts into safe, executable commands using Gemini 2.5 Pro, streams live results, and can execute remotely on your own Kali machine via WebSocket.
 
