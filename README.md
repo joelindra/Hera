@@ -4,7 +4,7 @@
 
 Run Kali Linux security tools by describing what you want in natural language. This web-based MCP (Model Context Protocol) Agent turns prompts into safe, executable commands using Gemini 2.5 Pro, streams live results, and can execute remotely on your own Kali machine via WebSocket.
 
-> Production-ready developer experience with React + TypeScript + Tailwind on the client, Express on the server, Gemini AI for prompt-to-command, WebSocket streaming, optional Telegram bot, and a professional terminal UI.
+> Developed an AI-powered pentesting tool, 'AI MCP', featuring a professional terminal interface. The frontend was built with React, TypeScript, and Tailwind CSS, while the backend utilized Express. Implemented Gemini AI to translate natural language prompts into executable commands, with real-time output streamed via WebSockets and optional integration with a Telegram bot."
 
 ---
 
