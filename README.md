@@ -16,7 +16,6 @@ Run Kali Linux security tools by describing what you want in natural language. T
 - **Dual modes**: Remote (Kali client) or Local (server) execution with clear status badges.
 - **Safety guardrails**: Context-aware validation to prevent obviously destructive system commands.
 - **Professional terminal UI**: Dark-first theme, terminal styling, result collapse/expand, and history.
-- **Quick Tools**: Nmap, Netcat, Whois, Dig, Nikto, SQLMap helpers.
 - **Personal API key support**: Use your own Gemini API key (per-user setting).
 - **Telegram bot integration (optional)**: Send prompts and receive results in Telegram.
 
