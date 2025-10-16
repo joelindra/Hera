@@ -183,7 +183,7 @@ Security notes:
 ## 📄 License
 ```
 Original: MIT
-Legend: Hades
+Legend: Hades [ Joel Indra ]
 ```
 ---
 
@@ -193,6 +193,35 @@ Legend: Hades
 - React, Vite, TailwindCSS, Radix UI, shadcn/ui
 - ws, express, tanstack/query
 
+---
+
+## 🤝 How to Contribute
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+If you have a suggestion that would make this project better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+```
+Getting Started
+1. Fork the project repository.
+
+2. Create your feature branch:
+git checkout -b feature/AmazingFeature
+
+3. Install dependencies (if you haven't already):
+npm install
+
+4. Make your changes and commit them with a descriptive message:
+git commit -m 'feat: Add some AmazingFeature'
+
+5. Push your changes to your forked repository's branch:
+git push origin feature/AmazingFeature
+
+6. Open a Pull Request against the main branch of the original repository.
+
+Guidelines:
+- Please provide a clear and detailed description of your changes in the pull request.
+- If your PR addresses an open issue, please link to it (e.g., "Closes #123").
+- Ensure your code is well-formatted and follows the existing style.
+```
 ---
 
 ## 🔗 Share
