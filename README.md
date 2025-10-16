@@ -17,7 +17,7 @@ Run Kali Linux security tools by describing what you want in natural language. T
 - **Safety guardrails**: Context-aware validation to prevent obviously destructive system commands.
 - **Professional terminal UI**: Dark-first theme, terminal styling, result collapse/expand, and history.
 - **Personal API key support**: Use your own Gemini API key (per-user setting).
-- **Telegram bot integration (optional)**: Send prompts and receive results in Telegram.
+- **Telegram bot integration (optional)**: Send prompts using Telegram.
 
 ---
 
