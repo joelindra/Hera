@@ -8,6 +8,11 @@ Run Kali Linux security tools by describing what you want in natural language. T
 
 ---
 
+### Documentation
+```
+https://joelindra.gitbook.io/all-tools/hera
+```
+
 ## ✨ Features
 
 - **Natural language → Kali command**: Gemini 2.5 Pro converts prompts into precise commands.
