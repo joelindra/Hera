@@ -199,5 +199,5 @@ Legend: Hades
 ## 🔗 Share
 
 If you like this project:
-- ⭐ Star the repo on GitHub
+- Star the repo on GitHub
 - Share your screenshots and tag the author
