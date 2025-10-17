@@ -1,10 +1,10 @@
 ![download](https://github.com/user-attachments/assets/a5f8c37e-0c32-4415-99ab-b6df4b6698d8)
 
-# Kali Linux x Tuan Hades MCP Agent
+# HERA — Incredible Pentest Agent
 
-Run Kali Linux security tools by describing what you want in natural language. This web-based MCP (Model Context Protocol) Agent turns prompts into safe, executable commands using Gemini 2.5 Pro, streams live results, and can execute remotely on your own Kali machine via WebSocket.
+Run Kali Linux security tools by describing what you want in natural language. This web-based MCP (Model Context Protocol) Agent turns prompts into safe, executable commands using Gemini 2.5 Pro with RAG enhancement, streams live results, and can execute remotely on your own Kali machine via WebSocket.
 
-> Developed an AI-powered pentesting tool, 'AI MCP', featuring a professional terminal interface. The frontend was built with React, TypeScript, and Tailwind CSS, while the backend utilized Express. Implemented Gemini AI to translate natural language prompts into executable commands, with real-time output streamed via WebSockets and optional integration with a Telegram bot."
+> Developed an AI-powered pentesting tool, 'AI MCP', featuring a professional terminal interface with advanced RAG capabilities. The frontend was built with React, TypeScript, and Tailwind CSS, while the backend utilized Express with enhanced WebSocket stability. Implemented Gemini AI with Data Pool integration to translate natural language prompts into executable commands, with real-time output streamed via WebSockets and optional integration with a Telegram bot."
 
 ---
 
@@ -16,28 +16,32 @@ https://joelindra.gitbook.io/all-tools/hera
 ## ✨ Features
 
 - **Natural language → Kali command**: Gemini 2.5 Pro converts prompts into precise commands.
+- **Data Pool (RAG System)**: Use markdown files as knowledge base to reduce AI hallucinations and improve command accuracy.
 - **Remote Kali execution (WebSocket)**: Pair the app with your Kali box using the included Python client.
 - **Real-time streaming output**: Watch command output as it happens in the browser.
 - **Dual modes**: Remote (Kali client) or Local (server) execution with clear status badges.
 - **Safety guardrails**: Context-aware validation to prevent obviously destructive system commands.
 - **Professional terminal UI**: Dark-first theme, terminal styling, result collapse/expand, and history.
+- **Enhanced Settings Management**: Comprehensive configuration with real-time status monitoring.
 - **Personal API key support**: Use your own Gemini API key (per-user setting).
 - **Telegram bot integration (optional)**: Send prompts using Telegram.
+- **Improved WebSocket Stability**: Persistent connections across page navigation.
 
 ---
 
 ## 🧠 How it works
 
 1. You enter a prompt (e.g., "Scan ports 80 and 443 on example.com").
-2. Backend asks Gemini to generate the exact Kali command.
-3. Command is validated for safety and tool availability.
-4. If a Kali client is connected, the command is sent via `/kali-ws` and executed on your machine; otherwise runs locally on the server.
-5. Output streams back over WebSocket to the browser in real-time.
+2. If Data Pool is enabled, the system loads relevant context from markdown files.
+3. Backend asks Gemini to generate the exact Kali command with RAG context.
+4. Command is validated for safety and tool availability.
+5. If a Kali client is connected, the command is sent via `/kali-ws` and executed on your machine; otherwise runs locally on the server.
+6. Output streams back over WebSocket to the browser in real-time.
 
 High-level flow:
 
 ```
-Prompt → Gemini (command + safety) → choose mode (remote/local) → execute → stream results
+Prompt → Data Pool Context → Gemini (command + safety + RAG) → choose mode (remote/local) → execute → stream results
 ```
 
 ---
@@ -46,7 +50,8 @@ Prompt → Gemini (command + safety) → choose mode (remote/local) → execute 
 
 - **Client**: React 18, TypeScript, Vite 7, TailwindCSS, shadcn/ui, Radix UI, TanStack Query
 - **Server**: Node.js, Express, WebSocket (`ws`), Passport (future-ready), Drizzle ORM (future-ready)
-- **AI**: `@google/genai` (Gemini 2.5 Pro)
+- **AI**: `@google/genai` (Gemini 2.5 Pro) with RAG enhancement
+- **Data Pool**: File system-based RAG system for markdown files
 - **Remote client**: Lightweight Python script using `websocket-client`
 - **Integration**: Optional Telegram bot via `node-telegram-bot-api`
 
@@ -54,15 +59,18 @@ Repo layout:
 
 ```
 client/           # React app (UI, pages, components)
-server/           # Express server, routes, Gemini integration, WebSocket
+server/           # Express server, routes, Gemini integration, WebSocket, pool reader
+pool/             # Markdown files for RAG knowledge base
 kali-client.py    # Remote client for your Kali machine
 ```
 
 Key server files:
-- `server/gemini.ts`: prompt → command, safety analysis
+- `server/gemini.ts`: prompt → command, safety analysis, RAG integration
 - `server/executor.ts`: process execution and streaming
 - `server/routes.ts`: REST APIs + WebSocket endpoints (`/ws`, `/kali-ws`)
 - `server/telegram.ts`: Telegram bot integration
+- `server/poolReader.ts`: Data Pool file scanning and processing
+- `server/storage.ts`: Settings and data persistence
 
 ---
 
@@ -109,6 +117,20 @@ Set these in your environment (or a `.env` you load before starting):
 - `SESSION_SECRET` (recommended): Express session secret. If omitted, it is auto-generated at runtime.
 
 > Get a Gemini API key from Google AI Studio: https://aistudio.google.com/app/apikey
+
+## 📚 Data Pool (RAG System)
+
+The Data Pool feature uses markdown files as a knowledge base to enhance AI command generation:
+
+1. **Setup**: Create a `pool` directory in your project root
+2. **Add Files**: Place `.md` files with relevant information (penetration testing playbooks, tool documentation, etc.)
+3. **Enable**: Go to Settings → Data Pool tab and toggle the switch
+4. **Monitor**: View real-time status including file count, size, and last scanned time
+
+Example pool files:
+- `penetration-testing-playbook.md` - Comprehensive pentesting methodology
+- `tool-documentation.md` - Detailed tool usage guides
+- `vulnerability-database.md` - Common vulnerabilities and exploitation techniques
 
 ---
 
@@ -160,6 +182,8 @@ Security notes:
   - "Lookup whois for facebook.com" → `whois facebook.com`
 - Watch live output; expand/collapse results; view command history.
 - Switch execution mode per command: Auto, Local, Remote.
+- **Configure Data Pool**: Go to Settings → Data Pool to enable RAG enhancement
+- **Monitor Status**: View real-time connection status and pool data statistics
 - Manage clients and API keys in Settings.
 
 ---
@@ -172,8 +196,34 @@ Security notes:
 
 ---
 
+## 🆕 Recent Updates
+
+### v2.0 - RAG Enhancement & Stability Improvements
+
+**New Features:**
+- **Data Pool (RAG System)**: Use markdown files as knowledge base to reduce AI hallucinations
+- **Enhanced Settings UI**: Comprehensive configuration with real-time status monitoring
+- **Improved WebSocket Stability**: Persistent connections across page navigation
+
+**Bug Fixes:**
+- Fixed WebSocket disconnection issues when navigating between pages
+- Resolved UI blank screen when enabling Data Pool feature
+- Fixed race conditions in settings updates
+- Improved error handling and user feedback
+
+**Technical Improvements:**
+- Centralized WebSocket management in App component
+- Custom event system for inter-component communication
+- Optimized React Query cache management
+- Enhanced error handling and debugging
+
+---
+
 ## 🗺️ Roadmap (selected)
 
+- Data Pool (RAG System)
+- Enhanced Settings Management
+- Improved WebSocket Stability
 - Persistent database storage (PostgreSQL)
 - Multi-user auth and roles
 - Command templates and saved prompts
@@ -181,6 +231,7 @@ Security notes:
 - Multi-session parallel execution
 - Full MCP protocol implementation
 - Output syntax highlighting
+- Advanced RAG features (semantic search, file categorization)
 
 ---
 
