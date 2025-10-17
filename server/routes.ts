@@ -5,6 +5,7 @@ import { storage } from "./storage";
 import { convertPromptToCommand, analyzeCommandSafety } from "./gemini";
 import { executeCommand, isCommandAvailable } from "./executor";
 import { initializeTelegramBot, stopTelegramBot, sendCommandResult, isTelegramBotActive } from "./telegram";
+import { poolDataReader } from "./poolReader";
 import { z } from "zod";
 
 const webClients = new Set<WebSocket>();
@@ -16,7 +17,7 @@ async function manageTelegramBot() {
     const settings = await storage.getAppSettings();
     
     if (settings.telegramEnabled && settings.telegramBotToken && settings.telegramChatId) {
-      // Initialize or reinitialize the bot
+      // Initialize or reinitialize the bot(s) with CSV inputs
       await initializeTelegramBot(settings.telegramBotToken, settings.telegramChatId);
       console.log("Telegram bot initialized");
     } else {
@@ -39,6 +40,7 @@ setInterval(async () => {
   
   const command = queue.shift();
   if (!command) return;
+  const originChatId = command.chatId;
   
   // Execute the command via the normal flow
   try {
@@ -64,17 +66,14 @@ setInterval(async () => {
         });
         
         const safetyCheck = await analyzeCommandSafety(generatedCommand, apiKey);
-        
+        // In local environment, we allow most commands. Only block if clearly destructive.
         if (!safetyCheck.isSafe) {
           await storage.updateCommand(cmd.id, {
             status: "error",
             output: `Command blocked for safety reasons: ${safetyCheck.reason}`,
             exitCode: "-1",
           });
-          
-          if (settings.telegramChatId) {
-            await sendCommandResult(settings.telegramChatId, await storage.getCommand(cmd.id) as any);
-          }
+          await sendCommandResult(command.chatId, await storage.getCommand(cmd.id) as any);
           return;
         }
         
@@ -94,17 +93,15 @@ setInterval(async () => {
           });
           
           setTimeout(async () => {
-            const command = await storage.getCommand(cmd.id);
-            if (command && command.status === "executing") {
+            const cmdLatest = await storage.getCommand(cmd.id);
+            if (cmdLatest && cmdLatest.status === "executing") {
               await storage.updateCommand(cmd.id, {
                 status: "error",
                 output: "Command execution timeout (300s)",
                 exitCode: "124",
               });
               
-              if (settings.telegramChatId) {
-                await sendCommandResult(settings.telegramChatId, await storage.getCommand(cmd.id) as any);
-              }
+              await sendCommandResult(originChatId, await storage.getCommand(cmd.id) as any);
             }
           }, 300000);
         } else {
@@ -117,9 +114,7 @@ setInterval(async () => {
               executionMode: "local",
             });
             
-            if (settings.telegramChatId) {
-              await sendCommandResult(settings.telegramChatId, await storage.getCommand(cmd.id) as any);
-            }
+            await sendCommandResult(originChatId, await storage.getCommand(cmd.id) as any);
             return;
           }
           
@@ -136,9 +131,7 @@ setInterval(async () => {
             exitCode: result.exitCode.toString(),
           });
           
-          if (settings.telegramChatId) {
-            await sendCommandResult(settings.telegramChatId, await storage.getCommand(cmd.id) as any);
-          }
+          await sendCommandResult(originChatId, await storage.getCommand(cmd.id) as any);
         }
       } catch (error: any) {
         console.error("Telegram command execution error:", error);
@@ -148,9 +141,7 @@ setInterval(async () => {
           exitCode: "-1",
         });
         
-        if (settings.telegramChatId) {
-          await sendCommandResult(settings.telegramChatId, await storage.getCommand(cmd.id) as any);
-        }
+        await sendCommandResult(originChatId, await storage.getCommand(cmd.id) as any);
       }
     })();
   } catch (error) {
@@ -302,6 +293,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     } catch (error: any) {
       res.status(400).json({ error: error.message || "Failed to connect to Gemini API" });
+    }
+  });
+
+  // Get pool data summary
+  app.get("/api/pool/summary", async (req, res) => {
+    try {
+      const summary = await poolDataReader.getPoolSummary();
+      res.json(summary);
+    } catch (error: any) {
+      console.error("Pool summary error:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Get full pool data (for RAG context)
+  app.get("/api/pool/data", async (req, res) => {
+    try {
+      const poolData = await poolDataReader.readPoolData();
+      res.json(poolData);
+    } catch (error: any) {
+      console.error("Pool data error:", error);
+      res.status(500).json({ error: error.message });
     }
   });
 

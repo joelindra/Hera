@@ -55,41 +55,38 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const wsUrl = `${protocol}//${window.location.host}/ws`;
-    const socket = new WebSocket(wsUrl);
-
-    socket.onopen = () => {
-      console.log("WebSocket connected");
+    // Listen for WebSocket events from the app-level connection
+    const handleExecutionStart = (event: CustomEvent) => {
+      setIsExecuting(true);
     };
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      
-      if (data.type === "execution_start") {
-        setIsExecuting(true);
-      } else if (data.type === "command_generated" || data.type === "execution_running") {
-        // Refresh to show generated command and status updates
-        queryClient.invalidateQueries({ queryKey: ["/api/commands"] });
-      } else if (data.type === "execution_complete" || data.type === "execution_error") {
-        setIsExecuting(false);
-        queryClient.invalidateQueries({ queryKey: ["/api/commands"] });
-      } else if (data.type === "kali_connected" || data.type === "kali_disconnected") {
-        // Refresh client list in header
-        queryClient.invalidateQueries({ queryKey: ["/api/kali-clients"] });
-      }
+    const handleExecutionUpdate = (event: CustomEvent) => {
+      // Refresh to show generated command and status updates
+      queryClient.invalidateQueries({ queryKey: ["/api/commands"] });
     };
 
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
+    const handleExecutionComplete = (event: CustomEvent) => {
+      setIsExecuting(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/commands"] });
     };
 
-    socket.onclose = () => {
-      console.log("WebSocket disconnected");
+    const handleKaliStatusChange = (event: CustomEvent) => {
+      // Refresh client list in header
+      queryClient.invalidateQueries({ queryKey: ["/api/kali-clients"] });
     };
+
+    // Add event listeners
+    window.addEventListener('execution_start', handleExecutionStart as EventListener);
+    window.addEventListener('execution_update', handleExecutionUpdate as EventListener);
+    window.addEventListener('execution_complete', handleExecutionComplete as EventListener);
+    window.addEventListener('kali_status_change', handleKaliStatusChange as EventListener);
 
     return () => {
-      socket.close();
+      // Clean up event listeners
+      window.removeEventListener('execution_start', handleExecutionStart as EventListener);
+      window.removeEventListener('execution_update', handleExecutionUpdate as EventListener);
+      window.removeEventListener('execution_complete', handleExecutionComplete as EventListener);
+      window.removeEventListener('kali_status_change', handleKaliStatusChange as EventListener);
     };
   }, []);
 

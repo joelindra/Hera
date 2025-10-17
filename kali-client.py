@@ -1,4 +1,16 @@
 #!/usr/bin/env python3
+"""
+Kali Linux MCP Agent - WebSocket Client
+Hubungkan mesin Kali Linux Anda ke MCP Agent web interface
+
+Installation:
+  pip install websocket-client
+
+Usage:
+  python3 kali-client.py --token YOUR_TOKEN_HERE --server wss://your-server.replit.app
+
+Get your token from the web interface Settings page.
+"""
 
 import subprocess
 import json

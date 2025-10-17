@@ -35,6 +35,7 @@ export class MemStorage implements IStorage {
       telegramBotToken: null,
       telegramChatId: null,
       telegramEnabled: false,
+      dataPoolEnabled: false,
       updatedAt: new Date(),
     };
   }

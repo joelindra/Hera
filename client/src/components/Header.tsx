@@ -25,7 +25,7 @@ export function Header() {
           </div>
           <div>
             <h1 className="text-lg font-semibold text-foreground" data-testid="text-app-title">
-              Kali x Tuan Hades MCP Agent
+              HERA — Incredible Pentest Agent
             </h1>
           </div>
         </Link>

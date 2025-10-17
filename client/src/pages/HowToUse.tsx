@@ -23,7 +23,7 @@ export default function HowToUse() {
           </div>
         </div>
         <p className="text-sm text-muted-foreground">
-          Complete guide to using Kali x Tuan Hades MCP Agent
+          Complete guide to using HERA — Incredible Pentest Agent
         </p>
       </div>
 
@@ -36,7 +36,7 @@ export default function HowToUse() {
             </h2>
             <div className="space-y-3 text-sm text-muted-foreground">
               <p>
-                Kali x Tuan Hades MCP Agent is a web-based tool that allows you to execute 
+                HERA — Incredible Pentest Agent is a web-based tool that allows you to execute 
                 Kali Linux commands using natural language with AI Gemini 2.5 Pro.
               </p>
               <p>

@@ -10,7 +10,7 @@ interface LanguageContextType {
 
 const translations = {
   en: {
-    appTitle: "Kali x Tuan Hades MCP Agent",
+    appTitle: "HERA — Incredible Pentest Agent",
     aiConnected: "AI Connected",
     kaliOffline: "Kali: Offline",
     kaliConnected: "Kali",
@@ -30,7 +30,7 @@ const translations = {
     linkedin: "LinkedIn",
   },
   id: {
-    appTitle: "Kali x Tuan Hades MCP Agent",
+    appTitle: "HERA — Incredible Pentest Agent",
     aiConnected: "AI Terhubung",
     kaliOffline: "Kali: Offline",
     kaliConnected: "Kali",

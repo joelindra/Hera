@@ -69,7 +69,7 @@ export function AuthorInfo() {
 
         <div className="pt-4 border-t border-border">
           <p className="text-xs text-muted-foreground text-center">
-            Kali x Tuan Hades MCP Agent
+            HERA — Incredible Pentest Agent
           </p>
           <p className="text-xs text-muted-foreground text-center mt-1">
             © 2025 All rights reserved

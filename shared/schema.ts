@@ -61,6 +61,7 @@ export const appSettings = pgTable("app_settings", {
   telegramBotToken: text("telegram_bot_token"),
   telegramChatId: text("telegram_chat_id"),
   telegramEnabled: boolean("telegram_enabled").default(false),
+  dataPoolEnabled: boolean("data_pool_enabled").default(false),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
