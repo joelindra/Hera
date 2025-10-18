@@ -284,9 +284,3 @@ Guidelines:
 If you like this project:
 - Star the repo on GitHub
 - Share your screenshots and tag the author
-
-## Screenshoots
-
-<img width="1909" height="941" alt="image" src="https://github.com/user-attachments/assets/402b170c-980c-424d-a4a8-e45734952f7c" />
-<img width="1909" height="941" alt="image" src="https://github.com/user-attachments/assets/895be84a-ede9-47ce-9905-0cfae969f438" />
-<img width="1035" height="869" alt="image" src="https://github.com/user-attachments/assets/4b18ea44-372e-4bd5-ba49-0a82e262306b" />
